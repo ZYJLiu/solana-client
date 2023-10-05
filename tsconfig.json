@@ -1,8 +1,14 @@
 {
   "compilerOptions": {
-    "lib": ["es2015"],
-    "module": "commonjs",
-    "target": "es6",
-    "esModuleInterop": true
-  }
+    "target": "es2022",
+    "moduleResolution": "nodeNext",
+    "module": "nodeNext",
+    "strict": true,
+    "allowImportingTsExtensions": true,
+    "noEmit": true
+  },
+  "ts-node": {
+    "esm": true,
+  }, 
+  "include": ["**/*.ts"],
 }
