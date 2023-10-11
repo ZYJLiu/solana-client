@@ -1,48 +1,13 @@
-import {
-  Connection,
-  LAMPORTS_PER_SOL,
-  SystemProgram,
-  Transaction,
-  clusterApiUrl,
-  sendAndConfirmTransaction,
-} from "@solana/web3.js";
-import { airdropSolIfNeeded, getKeypairFromEnvironment } from "./utils.ts";
+import { Connection, LAMPORTS_PER_SOL, clusterApiUrl } from "@solana/web3.js";
+
+import { getKeypairFromEnvironment } from "./utils";
 
 // Establish a connection to the Solana devnet cluster
 const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
 
 // Use existing keypairs or generate new ones if they don't exist
-const wallet_1 = getKeypairFromEnvironment("wallet_1");
-const wallet_2 = getKeypairFromEnvironment("wallet_2");
-
-console.log(`\n`);
-
-// Request an airdrop of SOL to wallet_1 if its balance is less than 1 SOL
-await airdropSolIfNeeded(wallet_1.publicKey);
-
-// Define the amount to transfer
-const transferAmount = 0.1; // 0.1 SOL
-
-// Create a transfer instruction for transferring SOL from wallet_1 to wallet_2
-const transferInstruction = SystemProgram.transfer({
-  fromPubkey: wallet_1.publicKey,
-  toPubkey: wallet_2.publicKey,
-  lamports: transferAmount * LAMPORTS_PER_SOL, // Convert transferAmount to lamports
-});
-
-// Add the transfer instruction to a new transaction
-const transaction = new Transaction().add(transferInstruction);
-
-// Attempt to send and confirm the transaction
-try {
-  await sendAndConfirmTransaction(connection, transaction, [wallet_1]);
-} catch (error) {
-  console.error("Transaction unsuccessful: ", error);
-}
+const wallet_1 = await getKeypairFromEnvironment("wallet_1");
 
 // Retrieve and log the new balance of each wallet after the transfer
-const balance1 = await connection.getBalance(wallet_1.publicKey);
-console.log("wallet_1 new balance:", balance1 / LAMPORTS_PER_SOL);
-
-const balance2 = await connection.getBalance(wallet_2.publicKey);
-console.log("wallet_2 new balance:", balance2 / LAMPORTS_PER_SOL);
+const balance = await connection.getBalance(wallet_1.publicKey);
+console.log("wallet_1 balance:", balance / LAMPORTS_PER_SOL);

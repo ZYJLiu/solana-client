@@ -1,11 +1,4 @@
-import {
-  Connection,
-  Keypair,
-  LAMPORTS_PER_SOL,
-  PublicKey,
-  clusterApiUrl,
-} from "@solana/web3.js";
-
+import { Keypair } from "@solana/web3.js";
 import base58 from "bs58";
 import dotenv from "dotenv";
 import fs from "fs";
@@ -49,49 +42,3 @@ export const getKeypairFromEnvironment = (variableName: string) => {
   }
   return Keypair.fromSecretKey(decodedSecretKey);
 };
-
-// This function will request an airdrop of 2 SOL to the given public key if its balance is less than 1 SOL
-export async function airdropSolIfNeeded(publicKey: PublicKey) {
-  // Establish a connection to the Solana devnet cluster
-  const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
-
-  // Get the current balance of the public key
-  const currentBalance = await connection.getBalance(publicKey);
-  const balanceInSOL = currentBalance / LAMPORTS_PER_SOL;
-  console.log("Current balance is", balanceInSOL);
-
-  // Check if the balance is less than 1 SOL
-  const insufficientFunds = balanceInSOL < 1;
-
-  if (insufficientFunds) {
-    try {
-      // 2 SOL
-      console.log("Balance is less than 1 SOL. Airdropping 2 SOL...");
-      const amountInLamports = 2 * LAMPORTS_PER_SOL;
-
-      // Request the airdrop
-      const txSignature = await connection.requestAirdrop(
-        publicKey,
-        amountInLamports
-      );
-
-      const { blockhash, lastValidBlockHeight } =
-        await connection.getLatestBlockhash();
-
-      // Confirm the airdrop transaction
-      await connection.confirmTransaction(
-        { blockhash, lastValidBlockHeight, signature: txSignature },
-        "confirmed"
-      );
-
-      // Check and log the new balance
-      const newBalance = await connection.getBalance(publicKey);
-      console.log("New balance is", newBalance / LAMPORTS_PER_SOL);
-    } catch (e) {
-      // Log an error message if the airdrop fails (likely due to rate limits)
-      console.log(
-        "Airdrop Unsuccessful, likely rate-limited. Try again later."
-      );
-    }
-  }
-}
