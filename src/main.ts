@@ -6,14 +6,14 @@ import {
   clusterApiUrl,
   sendAndConfirmTransaction,
 } from "@solana/web3.js";
-import { airdropSolIfNeeded, getOrCreateKeypair } from "./utils.ts";
+import { airdropSolIfNeeded, getKeypairFromEnvironment } from "./utils.ts";
 
 // Establish a connection to the Solana devnet cluster
 const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
 
 // Use existing keypairs or generate new ones if they don't exist
-const wallet_1 = await getOrCreateKeypair("wallet_1");
-const wallet_2 = await getOrCreateKeypair("wallet_2");
+const wallet_1 = getKeypairFromEnvironment("wallet_1");
+const wallet_2 = getKeypairFromEnvironment("wallet_2");
 
 console.log(`\n`);
 

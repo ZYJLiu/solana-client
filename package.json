@@ -1,21 +1,25 @@
 {
+  "name": "solana-client",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "test": "yarn run ts-mocha -p tsconfig.json -t 1000000 ./src/test.ts",
-    "start": "ts-node src/main.ts"
+    "start": "esrun src/main.ts",
+    "test": "ts-mocha src/test.ts"
   },
-  "license": "MIT",
   "type": "module",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "@solana/web3.js": "^1.78.0",
-    "dotenv": "^16.1.3"
+    "@digitak/esrun": "^3.2.25",
+    "@solana/web3.js": "^1.87.1",
+    "bs58": "^5.0.0",
+    "dotenv": "^16.3.1",
+    "ts-mocha": "^10.0.0",
+    "typescript": "^5.2.2"
   },
   "devDependencies": {
-    "@types/chai": "^4.3.3",
-    "@types/mocha": "^10.0.1",
-    "chai": "^4.3.6",
-    "mocha": "^10.0.0",
-    "ts-mocha": "^10.0.0",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.1.3"
+    "@types/mocha": "^10.0.2"
   }
 }

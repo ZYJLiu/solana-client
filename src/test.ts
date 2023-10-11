@@ -7,7 +7,7 @@ import {
   clusterApiUrl,
   sendAndConfirmTransaction,
 } from "@solana/web3.js";
-import { airdropSolIfNeeded, getOrCreateKeypair } from "./utils.ts";
+import { airdropSolIfNeeded, getKeypairFromEnvironment } from "./utils.ts";
 
 describe("Test Wallets", () => {
   // Establish a connection to the Solana devnet cluster
@@ -19,8 +19,8 @@ describe("Test Wallets", () => {
 
   before(async () => {
     // Use existing keypairs or generate new ones if they don't exist
-    wallet_1 = await getOrCreateKeypair("wallet_1");
-    wallet_2 = await getOrCreateKeypair("wallet_2");
+    wallet_1 = getKeypairFromEnvironment("wallet_1");
+    wallet_2 = getKeypairFromEnvironment("wallet_2");
 
     // Request an airdrop of SOL to wallet_1 if its balance is less than 1 SOL
     await airdropSolIfNeeded(wallet_1.publicKey);

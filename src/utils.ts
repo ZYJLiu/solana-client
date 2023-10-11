@@ -1,5 +1,3 @@
-import * as fs from "fs";
-
 import {
   Connection,
   Keypair,
@@ -8,41 +6,49 @@ import {
   clusterApiUrl,
 } from "@solana/web3.js";
 
+import base58 from "bs58";
 import dotenv from "dotenv";
+import fs from "fs";
 
 dotenv.config();
 
-// This function will return an existing keypair if it's present in the environment variables, or generate a new one if not
-export async function getOrCreateKeypair(walletName: string): Promise<Keypair> {
-  // Check if secretKey for `walletName` exist in .env file
-  const envWalletKey = process.env[walletName];
-
-  let keypair: Keypair;
-
-  // If no secretKey exist in the .env file for `walletName`
-  if (!envWalletKey) {
-    console.log(`Writing ${walletName} keypair to .env file...`);
-
+export const getKeypairFromEnvironment = (variableName: string) => {
+  const secretKeyString = process.env[variableName];
+  if (!secretKeyString) {
     // Generate a new keypair
-    keypair = Keypair.generate();
-
+    const keypair = Keypair.generate();
     // Save to .env file
     fs.appendFileSync(
       ".env",
-      `\n${walletName}=${JSON.stringify(Array.from(keypair.secretKey))}`
+      `\n${variableName}=${JSON.stringify(Array.from(keypair.secretKey))}`
     );
-  }
-  // If secretKey already exists in the .env file
-  else {
-    // Create a Keypair from the secretKey
-    const secretKey = new Uint8Array(JSON.parse(envWalletKey));
-    keypair = Keypair.fromSecretKey(secretKey);
+    return keypair;
   }
 
-  // Log public key and return the keypair
-  console.log(`${walletName} PublicKey: ${keypair.publicKey.toBase58()}`);
-  return keypair;
-}
+  // Try the shorter base58 format first
+  let decodedSecretKey: Uint8Array;
+  try {
+    decodedSecretKey = base58.decode(secretKeyString);
+    return Keypair.fromSecretKey(decodedSecretKey);
+  } catch (throwObject) {
+    const error = throwObject as Error;
+    if (!error.message.includes("Non-base58 character")) {
+      throw new Error(
+        `Invalid secret key in environment variable '${variableName}'!`
+      );
+    }
+  }
+
+  // Try the longer JSON format
+  try {
+    decodedSecretKey = Uint8Array.from(JSON.parse(secretKeyString));
+  } catch (error) {
+    throw new Error(
+      `Invalid secret key in environment variable '${variableName}'!`
+    );
+  }
+  return Keypair.fromSecretKey(decodedSecretKey);
+};
 
 // This function will request an airdrop of 2 SOL to the given public key if its balance is less than 1 SOL
 export async function airdropSolIfNeeded(publicKey: PublicKey) {
@@ -59,7 +65,7 @@ export async function airdropSolIfNeeded(publicKey: PublicKey) {
 
   if (insufficientFunds) {
     try {
-      // 2 SOL is maximum amount you can request in an airdrop on devnet
+      // 2 SOL
       console.log("Balance is less than 1 SOL. Airdropping 2 SOL...");
       const amountInLamports = 2 * LAMPORTS_PER_SOL;
 

@@ -1,14 +1,14 @@
 {
-  "compilerOptions": {
+"compilerOptions": {
     "target": "es2022",
     "moduleResolution": "nodeNext",
     "module": "nodeNext",
     "strict": true,
     "allowImportingTsExtensions": true,
     "noEmit": true
-  },
-  "ts-node": {
+},
+"ts-node": {
     "esm": true,
-  }, 
-  "include": ["**/*.ts"],
+}, 
+"include": ["**/*.ts"],
 }
