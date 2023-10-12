@@ -7,6 +7,7 @@ const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
 
 // Use existing keypairs or generate new ones if they don't exist
 const wallet_1 = await getKeypairFromEnvironment("wallet_1");
+console.log("wallet_1 address:", wallet_1.publicKey.toBase58());
 
 // Fetch the lamport balance for the specified public key
 const balance = await connection.getBalance(wallet_1.publicKey);
