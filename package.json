@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "esrun src/main.ts"
+    "start": "esrun src/index.ts"
   },
   "type": "module",
   "keywords": [],

@@ -5,7 +5,7 @@ import fs from "fs";
 
 dotenv.config();
 
-export const getKeypairFromEnvironment = (variableName: string) => {
+export const getOrCreateKeypair = (variableName: string) => {
   const secretKeyString = process.env[variableName];
   if (!secretKeyString) {
     // Generate a new keypair
@@ -13,7 +13,7 @@ export const getKeypairFromEnvironment = (variableName: string) => {
     // Save to .env file
     fs.appendFileSync(
       ".env",
-      `\n${variableName}=${JSON.stringify(Array.from(keypair.secretKey))}`
+      `\n${variableName}=${JSON.stringify(Object.values(keypair.secretKey))}`
     );
     return keypair;
   }
