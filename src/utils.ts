@@ -6,15 +6,17 @@ import fs from "fs";
 dotenv.config();
 
 export const getOrCreateKeypair = (variableName: string) => {
+  // Check if the secret with variable name exists in the .env file
   const secretKeyString = process.env[variableName];
   if (!secretKeyString) {
-    // Generate a new keypair
-    const keypair = Keypair.generate();
-    // Save to .env file
+    // Create new keypair one does not exist
+    const keypair = new Keypair();
+    // Append secretKey to .env file
     fs.appendFileSync(
       ".env",
       `\n${variableName}=${JSON.stringify(Object.values(keypair.secretKey))}`
     );
+    // Return the generated keypair
     return keypair;
   }
 
@@ -40,5 +42,7 @@ export const getOrCreateKeypair = (variableName: string) => {
       `Invalid secret key in environment variable '${variableName}'!`
     );
   }
+
+  // Return the decoded secret key from the environment variable
   return Keypair.fromSecretKey(decodedSecretKey);
 };
