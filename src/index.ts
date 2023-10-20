@@ -8,10 +8,6 @@ console.log("wallet_1 address:", wallet_1.publicKey.toBase58());
 // Establish a connection to the Solana devnet cluster
 const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
 
-// Fetch the lamport balance before requesting airdrop
-const preBalance = await connection.getBalance(wallet_1.publicKey);
-console.log("wallet_1 prebalance:", preBalance / LAMPORTS_PER_SOL);
-
 // Request the airdrop
 const transactionSignature = await connection.requestAirdrop(
   wallet_1.publicKey,
@@ -33,8 +29,8 @@ await connection.confirmTransaction(
 );
 
 // Fetch the lamport balance after requesting airdrop
-const postBalance = await connection.getBalance(wallet_1.publicKey);
-console.log("wallet_1 postbalance:", postBalance / LAMPORTS_PER_SOL);
+const balance = await connection.getBalance(wallet_1.publicKey);
+console.log("wallet_1 balance:", balance / LAMPORTS_PER_SOL);
 
 // Link to the transaction on Solana Explorer
 console.log(
