@@ -1,0 +1,26 @@
+{
+  "name": "solana-client",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "esrun src/index.ts"
+  },
+  "type": "module",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@digitak/esrun": "^3.2.25",
+    "@solana-program/system": "^0.6.1",
+    "@solana-program/token": "^0.4.0",
+    "@solana-program/token-2022": "^0.3.0",
+    "@solana/web3.js": "2.0.0-rc.4",
+    "@solana/transaction-confirmation": "2.0.0-rc.4",
+    "dotenv": "^16.3.1",
+    "typescript": "^5.2.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0"
+  }
+}

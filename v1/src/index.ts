@@ -6,7 +6,8 @@ const wallet_1 = getOrCreateKeypair("wallet_1");
 console.log("wallet_1 address:", wallet_1.publicKey.toBase58());
 
 // Establish a connection to the Solana devnet cluster
-const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
+// const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
+const connection = new Connection("http://127.0.0.1:8899", "confirmed");
 
 // Request the airdrop
 const transactionSignature = await connection.requestAirdrop(
@@ -32,8 +33,8 @@ await connection.confirmTransaction(
 const balance = await connection.getBalance(wallet_1.publicKey);
 console.log("wallet_1 balance:", balance / LAMPORTS_PER_SOL);
 
-// Link to the transaction on Solana Explorer
+// Link to the transaction on Solana Explorer, custom cluster defaults to localhost
 console.log(
   "Transaction Signature:",
-  `https://explorer.solana.com/tx/${transactionSignature}?cluster=devnet`
+  `https://explorer.solana.com/tx/${transactionSignature}?cluster=custom`
 );
