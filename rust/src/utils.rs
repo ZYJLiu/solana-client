@@ -3,7 +3,7 @@ use solana_sdk::signer::keypair::Keypair;
 use std::{env, fs::OpenOptions, io::Write};
 
 pub fn get_or_create_keypair(variable_name: &str) -> Result<Keypair> {
-    dotenv::dotenv().ok();
+    dotenvy::dotenv().ok();
 
     if let Ok(secret_key_string) = env::var(variable_name) {
         let decoded_secret_key: Vec<u8> = serde_json::from_str(&secret_key_string)?;
