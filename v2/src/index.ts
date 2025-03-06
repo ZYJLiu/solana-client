@@ -12,7 +12,7 @@ import {
   setTransactionMessageFeePayerSigner,
   setTransactionMessageLifetimeUsingBlockhash,
   signTransactionMessageWithSigners,
-} from "@solana/web3.js";
+} from "@solana/kit";
 import { getOrCreateKeypair } from "./utils";
 
 const wallet_1 = await getOrCreateKeypair("wallet_1");

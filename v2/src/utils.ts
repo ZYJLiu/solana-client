@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import fs from "fs";
-import { createKeyPairSignerFromPrivateKeyBytes } from "@solana/web3.js";
-import type { KeyPairSigner } from "@solana/web3.js";
+import { createKeyPairSignerFromPrivateKeyBytes } from "@solana/kit";
+import type { KeyPairSigner } from "@solana/kit";
 
 dotenv.config();
 
